@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{Mint, Token, TokenAccount, TransferChecked, accessor::amount, transfer_checked};
+use anchor_spl::token::{Mint, Token, TokenAccount, TransferChecked, transfer_checked};
 
 use crate::EscrowState;
 
