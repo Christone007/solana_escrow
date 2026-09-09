@@ -13,13 +13,10 @@ declare_id!("HS7TLs5KSoFwnQCU6xuMtuxZNUdQeYkBUdjhiK45WkGm");
 
 #[program]
 pub mod escrow {
-    use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        crate::instructions::initialize::handle_initialize(ctx)
-    }
+use super::*;
 
-    pub fn increment(ctx: Context<Increment>) -> Result<()> {
-        crate::instructions::increment::handle_increment(ctx)
+    pub fn make(ctx: Context<Make>, amount_a: u64, amount_b: u64, seed: u64) -> Result<()> {
+        make::handle_make(ctx, amount_a, amount_b, seed)
     }
 }
