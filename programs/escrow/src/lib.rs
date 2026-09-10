@@ -27,4 +27,6 @@ use super::*;
     pub fn update(ctx: Context<Update>, new_amount: u64) -> Result<()> {
         update::handle_update(ctx, new_amount)
     }
+
+    
 }
