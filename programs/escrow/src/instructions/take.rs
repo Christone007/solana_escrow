@@ -40,6 +40,7 @@ pub struct Take<'info> {
 
     #[account(
         mut,
+        close = maker,
         seeds = [b"escrow", maker.key().as_ref(), &escrow_state.seed.to_le_bytes()],
         bump
     )]
@@ -47,7 +48,6 @@ pub struct Take<'info> {
 
     #[account(
         mut,
-        close = taker,
         seeds = [b"vault", escrow_state.key().as_ref()],
         bump,
         token::mint = escrow_state.mint_a,
@@ -63,7 +63,6 @@ pub fn handle_take(ctx:Context<Take>) -> Result<()> {
     // transfer from taker_ata_b to maker_ata_b
 
     let amount = ctx.accounts.escrow_state.amount_b;
-    let maker = ctx.accounts.maker;
     let escrow_state = &ctx.accounts.escrow_state;
     let escrow_vault = &ctx.accounts.escrow_vault;
     let taker_ata_a = &ctx.accounts.taker_ata_a;
@@ -91,19 +90,22 @@ pub fn handle_take(ctx:Context<Take>) -> Result<()> {
         mint: ctx.accounts.mint_b.to_account_info()
     };
 
-    let vault_signer_seeds = &[&[
+
+
+    let vault_signer_seeds: &[&[&[u8]]] = &[&[
         b"escrow",
-        maker.key().as_ref(),
-        escrow_state.seed
+        ctx.accounts.escrow_state.maker.as_ref(),
+        &ctx.accounts.escrow_state.seed.to_le_bytes(),
+        &[ctx.bumps.escrow_state],
+    ]];
 
-    ]
-    ]
+    // let signer = &[&vault_signer_seeds[..]];
 
-    let cpi_ctx_vault = CpiContext::new_with_signer(token_program.key(), cpi_accounts_vault, vault_signer_seeds)
+    let cpi_ctx_vault = CpiContext::new_with_signer(token_program.key(), cpi_accounts_vault, vault_signer_seeds);
 
+    transfer_checked(cpi_ctx_vault, vault_balance, 6)?;
 
+    // the constraints should now close both escrow_state and escrow_vault
 
     Ok(())
 }
-// close escrow_state
-// close escrow_vault by sending SOL balance to taker
