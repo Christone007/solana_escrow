@@ -28,5 +28,9 @@ use super::*;
         update::handle_update(ctx, new_amount)
     }
 
+    pub fn refund(ctx: Context<Refund>) -> Result<()> {
+        refund::handle_refund(ctx)
+    }
+
     
 }
