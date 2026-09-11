@@ -16,6 +16,11 @@ pub struct Take<'info> {
     pub maker: UncheckedAccount<'info>,
 
     #[account(
+        address = escrow_state.mint_a
+    )]
+    pub mint_a: Account<'info, Mint>,
+
+    #[account(
         address = escrow_state.mint_b
     )]
     pub mint_b: Account<'info, Mint>,
@@ -87,7 +92,7 @@ pub fn handle_take(ctx:Context<Take>) -> Result<()> {
         from: escrow_vault.to_account_info(),
         to: taker_ata_a.to_account_info(),
         authority: escrow_state.to_account_info(),
-        mint: ctx.accounts.mint_b.to_account_info()
+        mint: ctx.accounts.mint_a.to_account_info()
     };
 
 
