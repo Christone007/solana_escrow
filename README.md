@@ -34,8 +34,6 @@ anchor-escrow/
 ├── programs/anchor-escrow/src/   # Core smart contract code
 ├── tests/
 │   └── test_escrow.rs            # Single-file comprehensive LiteSVM tests
-├── assets/
-│   └── escrow-tests-passing.png  # Execution screenshot
 ├── Anchor.toml                   # Anchor configuration pointing to cargo test
 └── README.md                     # Documentation
 ```
